@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div>index</div>
+    <div>Login</div>
 </template>
 
 <style scoped></style>
