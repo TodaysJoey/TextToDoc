@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div>index</div>
+    <div>footer</div>
 </template>
 
 <style scoped></style>
