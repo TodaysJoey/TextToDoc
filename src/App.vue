@@ -22,8 +22,8 @@ import FooterItem from './components/FooterItem.vue';
 }
 
 .content {
-  min-height: 575px;
-  padding: 20px;
+  min-height: 600px;
+  padding-bottom: 140px;
 }
 
 .header {

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="container mx-auto flex flex-col">
+    <div class="container mx-auto flex flex-col m-10">
         <div class="flex flex-row justify-around mx-auto bg-blue-700">
             <div class="title">
                 <img src="../assets/images/example.gif" alt="Example video" width="500" height="100">
@@ -17,7 +17,7 @@
                     faucibus.</p>
             </div>
         </div>
-        <div class="flex flex-col mx-auto m-5">
+        <div class="flex flex-col mx-auto m-20">
             <p class="text-center text-xs text-slate-300">Rhoncus, accumsan dictum</p>
             <p class="p-1 text-3xl text-center font-bold">문서 편집기가 없어도</p>
             <div class="flex flex-row mx-auto m-10">
