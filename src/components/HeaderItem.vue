@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
+
 
 const router = useRouter();
 const isLoginStatus = ref(false)
@@ -20,7 +21,7 @@ const goIndexPage = () => {
 <template>
     <div class="flex justify-between">
         <div>
-            <img src="../assets/images/logo.svg" alt="TexToDoc" @click="goIndexPage">
+            <img class="cursor-pointer" src="../assets/images/logo.svg" alt="TexToDoc" @click="goIndexPage">
         </div>
         <div>
             <button class="header-primary-btn" v-if="!isLoginStatus" @click="moveLoginPage">Sign In/Up</button>
