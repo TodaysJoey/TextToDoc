@@ -17,7 +17,7 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/doc',
+      path: '/editor',
       name: 'editor',
       component: DocumentEditor
     },
