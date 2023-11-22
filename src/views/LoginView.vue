@@ -1,9 +1,26 @@
 <script setup lang='ts'>
-//import { ref } from 'vue'
+import { ref } from 'vue'
 </script>
 
 <template>
-    <div>Login</div>
+    <div class="container mx-auto my-20">
+        <div class="box-content flex flex-col space-y-2 mx-0 my-auto" role="form">
+            <input class="border p-2" type="email" placeholder="이메일을 입력해주세요." />
+            <input class="border p-2" type="password" placeholder="패스워드를 입력해주세요." />
+            <button class="primary-btn">로그인</button>
+            <button class="default-btn">비밀번호 재설정</button>
+            <div class="box-content flex">
+                <button>가입하기</button>
+                <button class="sign-in-btn">이메일</button>
+                <button class="sign-in-btn">구글</button>
+            </div>
+
+        </div>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.sign-in-btn {
+    margin-left: auto;
+}
+</style>

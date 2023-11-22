@@ -13,3 +13,23 @@
         font-size: 14px;
     }
 }
+
+@layer base {
+    .primary-btn {
+        background-color: #3563E9;
+        border-radius: 5px;
+        font-weight: bold;
+        color: #fff;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .default-btn {
+        background-color: #fff;
+        border: 1px solid #3563E9;
+        border-radius: 5px;
+        color: #3563E9;
+        padding: 7px;
+        font-size: 14px;
+    }
+}
