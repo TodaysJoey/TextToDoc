@@ -2,11 +2,13 @@
 import { ref } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from "vue-router"
+import AlertModal from '../components/AlertModalItem.vue'
 
 const router = useRouter();
 
 const _email = ref('')
 const _password = ref('')
+const isOpenModal = ref(true)
 
 const auth = new AuthInfo();
 
@@ -24,7 +26,8 @@ const signInUser = async () => {
         router.push({
             path: '/editor',
         });
-
+    } else {
+        isOpenModal.value = true;
     }
 }
 
@@ -47,6 +50,7 @@ const signInUser = async () => {
 
         </div>
     </div>
+    <AlertModal v-if="isOpenModal === true"></AlertModal>
 </template>
 
 <style scoped>
