@@ -1,19 +1,31 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
-import AuthInfo from '../assets/ts/auth'
+import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
+import { useRouter } from "vue-router"
 
+const router = useRouter();
 
 const _email = ref('')
 const _password = ref('')
 
 const auth = new AuthInfo();
 
-const signUpUser = () => {
-    auth.signUpUser(_email.value, _password.value)
+const signUpUser = async () => {
+    let res = await auth.signUpUser(_email.value, _password.value)
+    // TODO 회원가입 팝업으로 처리
 }
 
-const signInUser = () => {
-    auth.signInUser(_email.value, _password.value)
+const signInUser = async () => {
+    let res: (IUser | IError) = await auth.signInUser(_email.value, _password.value)
+
+    if (res.isSuccess === true) {
+        // TODO 전역 상태값으로 저장
+
+        router.push({
+            path: '/editor',
+        });
+
+    }
 }
 
 

@@ -1,9 +1,14 @@
 import { initializeApp, type FirebaseApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, type Auth} from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, type Auth, type UserCredential} from "firebase/auth"
 
-interface IUser{
-    email: string,
-    password: string,
+interface IUser extends UserCredential {
+    isSuccess: boolean
+}
+
+interface IError {
+    isSuccess: boolean
+    errorCode: string
+    errorMessage: string
 }
 
 const firebaseConfig = {
@@ -19,7 +24,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig)
 const firebaseAuth = getAuth(firebaseApp)
 
-export default class AuthInfo {
+class AuthInfo {
     public app: FirebaseApp
     public auth: Auth
     
@@ -34,6 +39,8 @@ export default class AuthInfo {
             // Signed in 
             const user = userCredential.user;
             console.log(user);
+            return user;
+            
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -42,20 +49,29 @@ export default class AuthInfo {
         });
     }
 
-    signInUser(email: string, password: string){
-        signInWithEmailAndPassword(this.auth, email, password)
+    signInUser(email: string, password: string):(Promise<IUser|IError>){
+        return signInWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
+            // 성공
+            const signInInfo: IUser = {
+                isSuccess: true,
+                user: userCredential.user,
+                providerId: userCredential.providerId,
+                operationType: userCredential.operationType
+            }
+            
+            return signInInfo;
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            // 실패 
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            return errorMsg
         });
     }
 
 }
 
 
-// export { app, auth }
+
+export { AuthInfo }
+export type { IUser, IError }
