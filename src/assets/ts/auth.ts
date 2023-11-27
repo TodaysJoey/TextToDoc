@@ -59,12 +59,15 @@ class AuthInfo {
                 providerId: userCredential.providerId,
                 operationType: userCredential.operationType
             }
+
+            console.log(signInInfo)
             
             return signInInfo;
         })
         .catch((error) => {
             // 실패 
             const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
             return errorMsg
         });
     }

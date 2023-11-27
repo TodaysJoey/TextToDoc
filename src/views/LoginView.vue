@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from "vue-router"
 import AlertModal from '../components/AlertModalItem.vue'
@@ -8,9 +8,14 @@ const router = useRouter();
 
 const _email = ref('')
 const _password = ref('')
-const isOpenModal = ref(true)
+const isAlertVisible = ref(false)
 
 const auth = new AuthInfo();
+
+
+const changeAlertMessage = computed(() => {
+    return isAlertVisible.value ? '로그인에 실패하였습니다.' : ''
+})
 
 const signUpUser = async () => {
     let res = await auth.signUpUser(_email.value, _password.value)
@@ -27,7 +32,9 @@ const signInUser = async () => {
             path: '/editor',
         });
     } else {
-        isOpenModal.value = true;
+        // res.errorCode
+        // res.errorMessage
+        isAlertVisible.value = true;
     }
 }
 
@@ -50,7 +57,9 @@ const signInUser = async () => {
 
         </div>
     </div>
-    <AlertModal v-if="isOpenModal === true"></AlertModal>
+    <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage"
+        @response="(v) => { isAlertVisible = v }">
+    </AlertModal>
 </template>
 
 <style scoped>

@@ -1,5 +1,16 @@
 <script setup lang='ts'>
-//import { ref } from 'vue'
+
+const props = defineProps({
+    isVisible: { type: Boolean, required: true },
+    msg: String
+})
+
+const emit = defineEmits(['response'])
+const clickCloseBtn = () => {
+    emit('response', false)
+}
+
+
 </script>
 
 <template>
@@ -10,11 +21,11 @@
                 <span class="text-red-600 font-bold text-base">제목</span>
             </div>
             <div>
-                <p>페이지 내용</p>
+                <p>{{ props.msg }}</p>
             </div>
             <div class="">
-                <button>확인</button>
-                <button class="close">닫기</button>
+                <button @click="clickCloseBtn">확인</button>
+                <button class="close" @click="clickCloseBtn">닫기</button>
             </div>
         </div>
 
