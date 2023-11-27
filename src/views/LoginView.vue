@@ -57,7 +57,7 @@ const signInUser = async () => {
 
         </div>
     </div>
-    <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage"
+    <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage" :msgType="'warning'"
         @response="(v) => { isAlertVisible = v }">
     </AlertModal>
 </template>
