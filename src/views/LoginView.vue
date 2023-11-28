@@ -3,12 +3,14 @@ import { ref, computed } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from "vue-router"
 import AlertModal from '../components/AlertModalItem.vue'
+import ModalItem from '@/components/ModalItem.vue'
 
 const router = useRouter();
 
 const _email = ref('')
 const _password = ref('')
 const isAlertVisible = ref(false)
+const showModal = ref(true)
 
 const auth = new AuthInfo();
 
@@ -60,6 +62,8 @@ const signInUser = async () => {
     <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage" :msgType="'warning'"
         @response="(v) => { isAlertVisible = v }">
     </AlertModal>
+
+    <ModalItem v-if="showModal === true"></ModalItem>
 </template>
 
 <style scoped>

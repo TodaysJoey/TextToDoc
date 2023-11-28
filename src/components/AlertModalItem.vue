@@ -63,31 +63,4 @@ const cancelBtnColorMode = computed(() => {
     </div>
 </template>
 
-<style scoped>
-.dim {}
-
-.white-bg {
-    width: 70%;
-    margin: 80px auto;
-    background: white;
-    border-radius: 5px;
-    padding: 20px 0;
-}
-
-.close {
-    cursor: pointer;
-    border: none;
-    background: #6667AB;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    padding: 5px 15px;
-}
-
-.close:hover {
-    color: white;
-    font-weight: bold;
-    transform: scale(1.1);
-    transition: all 0.5s;
-}
-</style>
+<style scoped></style>
