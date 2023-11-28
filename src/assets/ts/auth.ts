@@ -33,19 +33,25 @@ class AuthInfo {
         this.auth = firebaseAuth
     }
 
-    signUpUser(email: string, password: string) {
-        createUserWithEmailAndPassword(this.auth, email, password)
+    signUpUser(email: string, password: string):(Promise<IUser|IError>) {
+        return createUserWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log(user);
-            return user;
+
+            const signUpInfo: IUser = {
+                isSuccess: true,
+                user: userCredential.user,
+                providerId: userCredential.providerId,
+                operationType: userCredential.operationType
+            }
+
+            console.log(signUpInfo);
+            return signUpInfo;
             
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(error);
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+            return errorMsg
         });
     }
 
