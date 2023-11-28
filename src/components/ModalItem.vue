@@ -26,7 +26,6 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
-import { useRouter } from "vue-router"
 
 const props = defineProps({
     type: String,
@@ -48,8 +47,6 @@ const clickConfirmBtn = async () => {
     let res: (IUser | IError) = await auth.signUpUser(_email.value, _password.value)
 
     if (res.isSuccess === true) {
-        // TODO 회원 가입 완료 후 유저 정보 전달
-        // TODO 전역 상태값으로 저장
         emit('signUpCompl', res)
 
     } else {
