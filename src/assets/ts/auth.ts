@@ -81,7 +81,7 @@ class AuthInfo {
     }
 
     signUpWithGoogle():any {
-        signInWithPopup(this.auth, provider)
+        return signInWithPopup(this.auth, provider)
         .then((result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -90,7 +90,19 @@ class AuthInfo {
             const user = result.user;
             // IdP data available using getAdditionalUserInfo(result)
             // ...
-            return ;
+
+            const signInInfo: IUser = {
+                isSuccess: true,
+                user: result.user,
+                providerId: result.providerId,
+                operationType: result.operationType
+            }
+
+
+            console.log(credential)
+            console.log(token)
+            
+            return signInInfo;
         }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
@@ -100,7 +112,14 @@ class AuthInfo {
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
             // ...
-            return;
+
+            console.log(error)
+            console.log(credential)
+
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+
+            return errorMsg
         })
     }
 

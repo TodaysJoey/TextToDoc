@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-black/50 w-full h-full fixed">
+    <div class="modal">
         <div class="container flex flex-col bg-white space-y-10 mx-auto my-20 w-4/6 h-2/6 px-7 py-5 rounded-lg">
             <div class="flex space-x-2">
                 <span class="text-lg font-semibold">{{ props.title }}</span>
@@ -59,4 +59,16 @@ const clickConfirmBtn = async () => {
 </script>
 
 
-<style scoped></style>
+<style scoped>
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    box-shadow: 0 4px 16px #00000026;
+}
+</style>
