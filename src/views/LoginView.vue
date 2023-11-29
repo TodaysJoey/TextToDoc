@@ -31,6 +31,8 @@ import { ref, computed } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from "vue-router"
 import { toast } from "vue3-toastify"
+import { useUserInfoStore } from "@/stores/user"
+import { storeToRefs } from 'pinia'
 import 'vue3-toastify/dist/index.css';
 import AlertModal from '../components/AlertModalItem.vue'
 import ModalItem from '@/components/ModalItem.vue'
@@ -45,7 +47,9 @@ const isShowModal = ref(false)
 const modalType = ref('')
 const modalTitle = ref('')
 
-const auth = new AuthInfo();
+const auth = new AuthInfo()
+const store = useUserInfoStore()
+const { info, getInfo } = storeToRefs(store)
 
 
 const changeAlertMessage = computed(() => {
@@ -64,7 +68,9 @@ const signInUser = async () => {
     let res: (IUser | IError) = await auth.signInUser(_email.value, _password.value)
 
     if (res.isSuccess === true) {
-        // TODO 전역 상태값으로 저장
+        // 전역 상태값으로 저장
+        store.saveUser(res);
+
         router.push({
             path: '/editor',
         });
@@ -79,6 +85,8 @@ const signUpWithGoogle = async () => {
     let res = await auth.signUpWithGoogle();
 
     if (res.isSuccess === true) {
+        store.saveUser(res);
+
         router.push({
             path: '/editor',
         });
