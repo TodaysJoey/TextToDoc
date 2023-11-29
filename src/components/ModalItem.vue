@@ -5,10 +5,15 @@
                 <span class="text-lg font-semibold">{{ props.title }}</span>
             </div>
             <div class="container max-w-md max-h-96 overflow-auto">
-                <div class="content flex flex-col">
+                <div class="flex flex-col" v-if="props.type === 'email'">
                     <input class="border p-2" type="email" id="email" placeholder="이메일을 입력해주세요." v-model="_email" />
                     <input class="border p-2" type="password" id="password" placeholder="패스워드를 입력해주세요."
                         v-model="_password" />
+                </div>
+                <div class="flex flex-col" v-if="props.type === 'reset'">
+                    <input class="border p-2" type="email" id="resetEmail" placeholder="가입한 이메일 주소를 입력해주세요."
+                        v-model="_resetEmail" />
+                    <span>입력한 이메일 주소로 비밀번호 재설정 메일이 전송됩니다.</span>
                 </div>
             </div>
             <div class="flex space-x-2">
@@ -34,8 +39,9 @@ const props = defineProps({
 
 const _email = ref('')
 const _password = ref('')
+const _resetEmail = ref('')
 
-const emit = defineEmits(['response', 'signUpCompl'])
+const emit = defineEmits(['response', 'signUpCompl', 'resetCompl'])
 
 const clickCloseBtn = () => {
     emit('response', false)
@@ -44,14 +50,29 @@ const clickCloseBtn = () => {
 const clickConfirmBtn = async () => {
     const auth = new AuthInfo();
 
-    let res: (IUser | IError) = await auth.signUpUser(_email.value, _password.value)
+    if (props.type == 'email') {
+        let res: (IUser | IError) = await auth.signUpUser(_email.value, _password.value)
 
-    if (res.isSuccess === true) {
-        emit('signUpCompl', res)
+        if (res.isSuccess === true) {
+            emit('signUpCompl', res)
 
-    } else {
-        // TODO 회원 가입 실패 시 토스트 메시지 처리
+        } else {
+            // TODO 회원 가입 실패 시 토스트 메시지 처리
+        }
+
     }
+
+    if (props.type == 'reset') {
+        let res = await auth.sendMailForPasswordReset(_resetEmail.value)
+
+        if (res.isSuccess === true) {
+            // TODO 성공 토스트 메시지 처리 
+            emit('resetCompl', res)
+        } else {
+            // TODO 회원 가입 실패 시 토스트 메시지 처리
+        }
+    }
+
 
 }
 

@@ -5,7 +5,7 @@
             <input class="border p-2" type="email" id="email" placeholder="이메일을 입력해주세요." v-model="_email" />
             <input class="border p-2" type="password" id="password" placeholder="패스워드를 입력해주세요." v-model="_password" />
             <button class="primary-btn" @click="signInUser">로그인</button>
-            <button class="default-btn">비밀번호 재설정</button>
+            <button class="default-btn" @click="resetPassword">비밀번호 재설정</button>
             <div class="box-content flex">
                 <button>가입하기</button>
                 <button class="sign-in-btn" @click="(ev) => showSignUpModal(ev)">E-mail</button>
@@ -20,8 +20,9 @@
         </AlertModal>
     </Teleport>
     <Teleport to="body">
-        <ModalItem v-if="isShowModal === true" :type="signUpType" :title="modalTitle" @response="(v) => { isShowModal = v }"
-            @signUpCompl="(res) => { _email = res.user.email; isShowModal = false }">
+        <ModalItem v-if="isShowModal === true" :type="modalType" :title="modalTitle" @response="(v) => { isShowModal = v }"
+            @signUpCompl="(res) => { _email = res.user.email; isShowModal = false }"
+            @resetCompl="(res) => { isShowModal = !res.isSuccess }">
         </ModalItem>
     </Teleport>
 </template>
@@ -40,7 +41,7 @@ const _password = ref('')
 const isAlertVisible = ref(false)
 const isShowModal = ref(false)
 
-const signUpType = ref('')
+const modalType = ref('')
 const modalTitle = ref('')
 
 const auth = new AuthInfo();
@@ -52,7 +53,7 @@ const changeAlertMessage = computed(() => {
 
 const showSignUpModal = (ev: any) => {
     // 회원가입 팝업으로 처리
-    signUpType.value = ev.target.innerText;
+    modalType.value = ev.target.innerText;
     modalTitle.value = ev.target.innerText + ' 회원 가입';
     isShowModal.value = true;
 
@@ -75,8 +76,7 @@ const signInUser = async () => {
 
 const signUpWithGoogle = async () => {
     let res = await auth.signUpWithGoogle();
-    // eslint-disable-next-line no-debugger
-    debugger;
+
     if (res.isSuccess === true) {
         router.push({
             path: '/editor',
@@ -85,6 +85,12 @@ const signUpWithGoogle = async () => {
         // TODO 토스트 메시지 처리
         alert('구글 로그인 실패!')
     }
+}
+
+const resetPassword = () => {
+    modalType.value = 'reset'
+    modalTitle.value = '비밀번호 재설정'
+    isShowModal.value = true;
 }
 
 </script>

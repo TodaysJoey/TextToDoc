@@ -1,5 +1,6 @@
 import { initializeApp, type FirebaseApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, type Auth, type UserCredential} from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
+        sendPasswordResetEmail, type Auth, type UserCredential} from "firebase/auth"
 
 interface IUser extends UserCredential {
     isSuccess: boolean
@@ -121,6 +122,22 @@ class AuthInfo {
 
             return errorMsg
         })
+    }
+
+    sendMailForPasswordReset(email: string) {
+        return sendPasswordResetEmail(this.auth, email)
+        .then(()=>{
+            // TODO 토스트 메시지로 전송 완료 알림
+            return {isSuccess: true}
+        })
+        .catch((error)=>{
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+
+            return errorMsg
+
+        })
+
     }
 
 }
