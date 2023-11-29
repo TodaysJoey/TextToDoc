@@ -49,7 +49,7 @@ const modalTitle = ref('')
 
 const auth = new AuthInfo()
 const store = useUserInfoStore()
-const { info, getInfo } = storeToRefs(store)
+// const { info, getInfo } = storeToRefs(store)
 
 
 const changeAlertMessage = computed(() => {
