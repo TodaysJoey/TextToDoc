@@ -31,6 +31,8 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const props = defineProps({
     type: String,
@@ -51,26 +53,30 @@ const clickConfirmBtn = async () => {
     const auth = new AuthInfo();
 
     if (props.type == 'email') {
-        let res: (IUser | IError) = await auth.signUpUser(_email.value, _password.value)
+        let res: (IUser | IError | any) = await auth.signUpUser(_email.value, _password.value)
 
         if (res.isSuccess === true) {
             emit('signUpCompl', res)
-
         } else {
-            // TODO 회원 가입 실패 시 토스트 메시지 처리
+            toast.error(`가입에 실패했어요. (${res.errorCode}: ${res.errorMessage})`, {
+                position: toast.POSITION.BOTTOM_CENTER
+            })
         }
+
 
     }
 
     if (props.type == 'reset') {
-        let res = await auth.sendMailForPasswordReset(_resetEmail.value)
+        let res: any = await auth.sendMailForPasswordReset(_resetEmail.value)
 
         if (res.isSuccess === true) {
-            // TODO 성공 토스트 메시지 처리 
             emit('resetCompl', res)
         } else {
-            // TODO 회원 가입 실패 시 토스트 메시지 처리
+            toast.error(`비밀번호 재설정 메일 전송을 실패했어요. (${res.errorCode}: ${res.errorMessage})`, {
+                position: toast.POSITION.BOTTOM_CENTER
+            })
         }
+
     }
 
 

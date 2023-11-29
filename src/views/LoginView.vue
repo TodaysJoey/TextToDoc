@@ -21,8 +21,7 @@
     </Teleport>
     <Teleport to="body">
         <ModalItem v-if="isShowModal === true" :type="modalType" :title="modalTitle" @response="(v) => { isShowModal = v }"
-            @signUpCompl="(res) => { _email = res.user.email; isShowModal = false }"
-            @resetCompl="(res) => { isShowModal = !res.isSuccess }">
+            @signUpCompl="(res) => { runModalCallback(res) }" @resetCompl="(res) => { runModalCallback(res) }">
         </ModalItem>
     </Teleport>
 </template>
@@ -31,6 +30,8 @@
 import { ref, computed } from 'vue'
 import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from "vue-router"
+import { toast } from "vue3-toastify"
+import 'vue3-toastify/dist/index.css';
 import AlertModal from '../components/AlertModalItem.vue'
 import ModalItem from '@/components/ModalItem.vue'
 
@@ -91,6 +92,27 @@ const resetPassword = () => {
     modalType.value = 'reset'
     modalTitle.value = '비밀번호 재설정'
     isShowModal.value = true;
+}
+
+const runModalCallback = (res: any) => {
+    if (modalType.value == 'email' && res.isSuccess === true) {
+        if (res.isSuccess === true) {
+            _email.value = res.user.email
+            isShowModal.value = false
+
+            toast.success("회원 가입을 축하드려요! 가입한 계정으로 로그인 해보세요.", {
+                position: toast.POSITION.BOTTOM_CENTER
+            })
+        }
+
+    }
+
+    if (modalType.value == 'reset' && res.isSuccess === true) {
+        isShowModal.value = false
+        toast.success("비밀번호 재설정 메일을 전달했어요. 메일함을 확인해보세요.", {
+            position: toast.POSITION.BOTTOM_CENTER
+        })
+    }
 }
 
 </script>
