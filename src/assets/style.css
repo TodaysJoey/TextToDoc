@@ -15,6 +15,11 @@
 }
 
 @layer base {
+    .content {
+        min-height: 744px;
+        padding-bottom: 140px;
+    }
+
     .primary-btn {
         background-color: #3563E9;
         border-radius: 5px;

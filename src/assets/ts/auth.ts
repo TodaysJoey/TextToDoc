@@ -1,5 +1,6 @@
 import { initializeApp, type FirebaseApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, type Auth, type UserCredential} from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
+        sendPasswordResetEmail, type Auth, type UserCredential} from "firebase/auth"
 
 interface IUser extends UserCredential {
     isSuccess: boolean
@@ -23,6 +24,8 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig)
 const firebaseAuth = getAuth(firebaseApp)
+const provider = new GoogleAuthProvider()
+
 
 class AuthInfo {
     public app: FirebaseApp
@@ -33,19 +36,25 @@ class AuthInfo {
         this.auth = firebaseAuth
     }
 
-    signUpUser(email: string, password: string) {
-        createUserWithEmailAndPassword(this.auth, email, password)
+    signUpUser(email: string, password: string):(Promise<IUser|IError>) {
+        return createUserWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log(user);
-            return user;
+
+            const signUpInfo: IUser = {
+                isSuccess: true,
+                user: userCredential.user,
+                providerId: userCredential.providerId,
+                operationType: userCredential.operationType
+            }
+
+            console.log(signUpInfo);
+            return signUpInfo;
             
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(error);
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+            return errorMsg
         });
     }
 
@@ -70,6 +79,65 @@ class AuthInfo {
             console.error(errorMsg)
             return errorMsg
         });
+    }
+
+    signUpWithGoogle():any {
+        return signInWithPopup(this.auth, provider)
+        .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential?.accessToken
+            // The signed-in user info.
+            const user = result.user;
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+
+            const signInInfo: IUser = {
+                isSuccess: true,
+                user: result.user,
+                providerId: result.providerId,
+                operationType: result.operationType
+            }
+
+
+            console.log(credential)
+            console.log(token)
+            
+            return signInInfo;
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+
+            console.log(error)
+            console.log(credential)
+
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+
+            return errorMsg
+        })
+    }
+
+    sendMailForPasswordReset(email: string) {
+        return sendPasswordResetEmail(this.auth, email)
+        .then(()=>{
+            // TODO 토스트 메시지로 전송 완료 알림
+            return {isSuccess: true}
+        })
+        .catch((error)=>{
+            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
+            console.error(errorMsg)
+
+            return errorMsg
+
+        })
+
     }
 
 }

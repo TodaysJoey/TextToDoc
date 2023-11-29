@@ -1,9 +1,5 @@
-<script setup lang='ts'>
-//import { ref } from 'vue'
-</script>
-
 <template>
-    <div class="container mx-auto flex flex-col m-10">
+    <div class="container mx-auto flex flex-col mt-10 content">
         <div class="flex flex-row justify-around mx-auto bg-blue-700">
             <div class="title">
                 <img src="../assets/images/example.gif" alt="Example video" width="500" height="100">
@@ -46,6 +42,10 @@
         </div>
     </div>
 </template>
+
+<script setup lang='ts'>
+//import { ref } from 'vue'
+</script>
 
 <style scoped>
 .detail-text-box {
