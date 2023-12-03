@@ -1,9 +1,12 @@
 import { initializeApp, type FirebaseApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
-        sendPasswordResetEmail, type Auth, type UserCredential} from "firebase/auth"
+        sendPasswordResetEmail, type Auth, type UserCredential, type UserInfo, OperationType} from "firebase/auth"
 
-interface IUser extends UserCredential {
-    isSuccess: boolean
+interface IUser extends Omit<UserCredential, 'user' | 'providerId' | 'operationType'> {
+    isSuccess: boolean,
+    user?: UserInfo,
+    providerId?: string | null,
+    operationType?: (typeof OperationType)[keyof typeof OperationType]
 }
 
 interface IError {
@@ -36,110 +39,80 @@ class AuthInfo {
         this.auth = firebaseAuth
     }
 
-    signUpUser(email: string, password: string):(Promise<IUser|IError>) {
-        return createUserWithEmailAndPassword(this.auth, email, password)
-        .then((userCredential) => {
-
-            const signUpInfo: IUser = {
-                isSuccess: true,
-                user: userCredential.user,
-                providerId: userCredential.providerId,
-                operationType: userCredential.operationType
-            }
-
-            console.log(signUpInfo);
-            return signUpInfo;
-            
-        })
-        .catch((error) => {
-            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
-            console.error(errorMsg)
-            return errorMsg
-        });
-    }
-
-    signInUser(email: string, password: string):(Promise<IUser|IError>){
+    signIn(email: string, password: string):(Promise<IUser|IError>){
         return signInWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
             // 성공
-            const signInInfo: IUser = {
-                isSuccess: true,
-                user: userCredential.user,
-                providerId: userCredential.providerId,
-                operationType: userCredential.operationType
-            }
-
-            console.log(signInInfo)
-            
-            return signInInfo;
+            return authEventHandler.success(true, userCredential.user, userCredential.providerId, userCredential.operationType)
         })
         .catch((error) => {
             // 실패 
-            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
-            console.error(errorMsg)
-            return errorMsg
+            return {isSuccess: false, errorCode: error.code, errorMessage: error.message} as IError
         });
     }
 
-    signUpWithGoogle():any {
+    signUp(email: string, password: string):(Promise<IUser|IError>) {
+        if(!!email || !!password) {
+            throw new Error("입력항목을 확인해주세요.")
+        } else {
+            return createUserWithEmailAndPassword(this.auth, email, password)
+            .then((userCredential) => {
+                return authEventHandler.success(true, userCredential.user, userCredential.providerId, userCredential.operationType)
+            })
+            .catch((error) => {
+                return {isSuccess: false, errorCode: error.code, errorMessage: error.message} as IError
+            })
+        }
+        
+    }
+
+    signUpWithGoogle():(Promise<IUser|IError>) {
         return signInWithPopup(this.auth, provider)
         .then((result) => {
+            // FIXME 토큰을 저장해야할까?
             // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken
+            // const credential = GoogleAuthProvider.credentialFromResult(result);
+            // const token = credential?.accessToken
             // The signed-in user info.
-            const user = result.user;
             // IdP data available using getAdditionalUserInfo(result)
             // ...
 
-            const signInInfo: IUser = {
-                isSuccess: true,
-                user: result.user,
-                providerId: result.providerId,
-                operationType: result.operationType
-            }
+            return authEventHandler.success(true, result.user, result.providerId, result.operationType)
 
-
-            console.log(credential)
-            console.log(token)
-            
-            return signInInfo;
         }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            
+            // FIXME credential 을 어딘가에 저장해야할까?
             // The email of the user's account used.
-            const email = error.customData.email;
+            // const email = error.customData.email;
             // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
+            // const credential = GoogleAuthProvider.credentialFromError(error);
+            
 
-            console.log(error)
-            console.log(credential)
-
-            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
-            console.error(errorMsg)
-
-            return errorMsg
+            return authEventHandler.error(false, error.code, error.message)
         })
     }
 
-    sendMailForPasswordReset(email: string) {
+    resetPassword(email: string):Promise<IUser|IError> {
         return sendPasswordResetEmail(this.auth, email)
-        .then(()=>{
-            // TODO 토스트 메시지로 전송 완료 알림
-            return {isSuccess: true}
-        })
-        .catch((error)=>{
-            const errorMsg:IError= {isSuccess: false, errorCode: error.code, errorMessage: error.message}
-            console.error(errorMsg)
-
-            return errorMsg
-
-        })
-
+        .then(()=>authEventHandler.success(true))
+        .catch((error)=>authEventHandler.error(false, error.code, error.message))
+        
     }
 
+}
+
+class authEventHandler {
+    constructor(){}
+    static success(flag: boolean, userInfo?: UserInfo, providerId?: string|null, opType?: "link" | "reauthenticate" | "signIn"): IUser{
+        return {isSuccess: flag,
+                user: userInfo ?? '',
+                providerId: providerId ?? '',
+                operationType: opType ?? ''
+        } as IUser
+    }
+    static error(flag: boolean, code: string, msg: string):IError {
+        return {isSuccess: flag, errorCode: code, errorMessage: msg} as IError
+    }
 }
 
 
