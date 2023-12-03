@@ -1,12 +1,30 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
   "compilerOptions": {
-    "composite": true,
+    "composite": true, // 프로젝트 컴파일 활성화
+    "target": "ES6", // ECMAScript 목표버전 설정
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "dom"
+    ], // 컴파일 과정에 사용될 라이브러리 파일 설정
+    "removeComments": true, // 컴파일 시 주석 제거
+    "allowJs": true, // 자바스크립트 파일 컴파일 허용
+    "checkJs": true, // .js 파일 오류 리포트 설정
+    "noImplicitAny": false, // 명시적이지 않은 any 유형 표현식 및 선언식 사용 여부
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   }
 }
