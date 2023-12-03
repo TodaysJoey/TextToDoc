@@ -1,6 +1,8 @@
 import { initializeApp, type FirebaseApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
         sendPasswordResetEmail, type Auth, type UserCredential, type UserInfo, OperationType} from "firebase/auth"
+import Constant from "./constant"
+
 
 interface IUser extends Omit<UserCredential, 'user' | 'providerId' | 'operationType'> {
     isSuccess: boolean,
@@ -15,15 +17,7 @@ interface IError {
     errorMessage: string
 }
 
-const firebaseConfig = {
-    apiKey: "AIzaSyD5VvCYAVxAbEIXBCIN5VlaQC9GDgzhISo",
-    authDomain: "textodoc-6d122.firebaseapp.com",
-    projectId: "textodoc-6d122",
-    storageBucket: "textodoc-6d122.appspot.com",
-    messagingSenderId: "238773738979",
-    appId: "1:238773738979:web:ce5ce8e67fb6120d5b94d6",
-    measurementId: "G-0W9CREFLG9"
-}
+const firebaseConfig = Constant.FIREBASE_CONFIG
 
 const firebaseApp = initializeApp(firebaseConfig)
 const firebaseAuth = getAuth(firebaseApp)
