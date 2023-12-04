@@ -19,11 +19,12 @@
             :msgType="'warning'" @response="(v) => { isAlertVisible = v }">
         </AlertModal>
     </Teleport>
-    <Teleport to="body">
-        <ModalItem v-if="isShowModal === true" :type="modalType" :title="modalTitle" @response="(v) => { isShowModal = v }"
-            @signUpCompl="(res) => { runModalCallback(res) }" @resetCompl="(res) => { runModalCallback(res) }">
-        </ModalItem>
-    </Teleport>
+
+    <SignUpModal v-if="isShowModal === true && modalType == 'E-mail'" :title="modalTitle"
+        @closeModal="(v) => { isShowModal = v }" @signUpCompl="(res) => { runModalCallback(res) }"></SignUpModal>
+    <ResetModal v-if="isShowModal === true && modalType == 'reset'" :title="modalTitle"
+        @closeModal="(v) => { isShowModal = v; modalType = ''; }" @resetCompl="(res) => { runModalCallback(res) }">
+    </ResetModal>
 </template>
 
 <script setup lang='ts'>
@@ -33,8 +34,9 @@ import { useRouter } from "vue-router"
 import { toast } from "vue3-toastify"
 import { useUserInfoStore } from "@/stores/user"
 import 'vue3-toastify/dist/index.css';
-import AlertModal from '../components/AlertModalItem.vue'
-import ModalItem from '@/components/ModalItem.vue'
+import AlertModal from '@/components/AlertModalItem.vue'
+import SignUpModal from '@/components/modals/SignUpModal.vue'
+import ResetModal from '@/components/modals/PasswordResetModal.vue'
 
 const router = useRouter();
 
