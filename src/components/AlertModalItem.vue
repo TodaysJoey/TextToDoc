@@ -43,21 +43,21 @@ const titleIconSrc = computed(() => {
 })
 
 const textColorMode = computed(() => {
-    if (alertType.value === 'warning') return 'text-red-600 font-bold text-base'
-    else if (alertType.value === 'confirm') return 'text-green-600 font-bold text-base'
-    else return 'text-blue-600 font-bold text-base'
+    if (alertType.value === 'warning') return 'warning-title'
+    else if (alertType.value === 'confirm') return 'confirm-title'
+    else return 'info-title'
 })
 
 const okBtnColorMode = computed(() => {
-    if (alertType.value === 'warning') return 'bg-red-600 w-16 p-2 rounded font-bold text-base text-white'
-    else if (alertType.value === 'confirm') return 'bg-green-600 w-16 p-2 rounded font-bold text-base text-white'
-    else return 'bg-blue-600 w-16 p-2 rounded font-bold text-base text-white'
+    if (alertType.value === 'warning') return 'warning-ok-btn'
+    else if (alertType.value === 'confirm') return 'confirm-ok-btn'
+    else return 'info-ok-btn'
 })
 
 const cancelBtnColorMode = computed(() => {
-    if (alertType.value === 'warning') return 'border border-red-600 w-16 p-2 rounded font-bold text-base text-red-600'
-    else if (alertType.value === 'confirm') return 'border border-green-600 w-16 p-2 rounded font-bold text-base text-green-600'
-    else return 'border border-blue-600 w-16 p-2 rounded font-bold text-base text-blue-600'
+    if (alertType.value === 'warning') return 'warning-cancel-btn'
+    else if (alertType.value === 'confirm') return 'confirm-cancle-btn'
+    else return 'info-cancel-btn '
 })
 
 

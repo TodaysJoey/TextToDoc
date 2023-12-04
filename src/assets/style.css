@@ -12,6 +12,44 @@
         padding: 10px;
         font-size: 14px;
     }
+
+    .warning-title {
+        @apply text-red-600 font-bold text-base
+    }
+
+    .info-title {
+        @apply text-blue-600 font-bold text-base
+    }
+
+    .confirm-title {
+        @apply text-green-600 font-bold text-base
+    }
+
+    .warning-ok-btn {
+        @apply bg-red-600 w-16 p-2 rounded font-bold text-base text-white
+    }
+
+    .warning-cancel-btn {
+        @apply border border-red-600 w-16 p-2 rounded font-bold text-base text-red-600
+    }
+
+    .confirm-ok-btn {
+        @apply bg-green-600 w-16 p-2 rounded font-bold text-base text-white
+    }
+
+    .confirm-cancle-btn {
+        @apply border border-green-600 w-16 p-2 rounded font-bold text-base text-green-600
+    }
+
+    .info-ok-btn {
+        @apply bg-blue-600 w-16 p-2 rounded font-bold text-base text-white
+    }
+
+    .info-cancel-btn {
+        @apply border border-blue-600 w-16 p-2 rounded font-bold text-base text-blue-600
+    }
+
+
 }
 
 @layer base {
