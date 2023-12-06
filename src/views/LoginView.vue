@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class = "container mx-auto flex flex-col m-10"></div> -->
   <div class="container mx-auto flex flex-col mt-10 mb-10 content">
     <div class="flex flex-col space-y-2 mx-0 my-auto" role="form">
       <input
@@ -95,7 +94,6 @@ const modalTitle = ref('')
 
 const auth = new AuthInfo()
 const store = useUserInfoStore()
-// const { info, getInfo } = storeToRefs(store)
 
 const changeAlertMessage = computed(() => {
   return isAlertVisible.value ? '로그인에 실패하였습니다.' : ''
@@ -119,23 +117,24 @@ const signInUser = async () => {
       path: '/editor'
     })
   } catch (e) {
+    // TODO 토스트 메시지로 변경
     console.error((e as IError).errorCode, (e as IError).errorMessage)
     isAlertVisible.value = true
   }
 }
 
 const signUpWithGoogle = async () => {
-  let res = await auth.signUpWithGoogle()
-
-  if (res.isSuccess === true) {
+  try {
+    let res: IUser = await auth.signUpWithGoogle()
     store.saveUser(res)
 
     router.push({
       path: '/editor'
     })
-  } else {
-    // TODO 토스트 메시지 처리
-    alert('구글 로그인 실패!')
+  } catch (e) {
+    // TODO 토스트 메시지로 변경
+    console.error((e as IError).errorCode, (e as IError).errorMessage)
+    isAlertVisible.value = true
   }
 }
 
