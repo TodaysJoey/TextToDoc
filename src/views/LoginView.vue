@@ -1,20 +1,8 @@
 <template>
   <div class="container mx-auto flex flex-col mt-10 mb-10 content">
     <div class="flex flex-col space-y-2 mx-0 my-auto" role="form">
-      <input
-        class="border p-2"
-        type="email"
-        id="email"
-        placeholder="이메일을 입력해주세요."
-        v-model="email"
-      />
-      <input
-        class="border p-2"
-        type="password"
-        id="password"
-        placeholder="패스워드를 입력해주세요."
-        v-model="password"
-      />
+      <input class="border p-2" type="email" id="email" placeholder="이메일을 입력해주세요." v-model="email" />
+      <input class="border p-2" type="password" id="password" placeholder="패스워드를 입력해주세요." v-model="password" />
       <button class="primary-btn" @click="signInUser">로그인</button>
       <button class="default-btn" @click="resetPassword">비밀번호 재설정</button>
       <div class="box-content flex">
@@ -25,49 +13,22 @@
     </div>
   </div>
   <Teleport to="body">
-    <AlertModal
-      v-if="isAlertVisible === true"
-      :isVisible="isAlertVisible"
-      :msg="changeAlertMessage"
-      :msgType="'warning'"
-      @response="
-        (v) => {
-          isAlertVisible = v
-        }
-      "
-    >
+    <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage" :msgType="'warning'"
+      @response="(v) => {
+        isAlertVisible = v
+      }
+        ">
     </AlertModal>
   </Teleport>
 
-  <SignUpModal
-    v-if="isShowModal === true && modalType == 'E-mail'"
-    :title="modalTitle"
-    @closeModal="
-      (v) => {
-        isShowModal = v
-      }
-    "
-    @signUpCompl="
-      (res) => {
-        runModalCallback(res)
-      }
-    "
-  ></SignUpModal>
-  <ResetModal
-    v-if="isShowModal === true && modalType == 'reset'"
-    :title="modalTitle"
-    @closeModal="
-      (v) => {
-        isShowModal = v
-        modalType = ''
-      }
-    "
-    @resetCompl="
-      (res) => {
-        runModalCallback(res)
-      }
-    "
-  >
+  <SignUpModal v-if="modalType == 'E-mail'" :title="modalTitle" @signUpCompl="(res) => {
+    runModalCallback(res)
+  }
+    "></SignUpModal>
+  <ResetModal v-if="modalType == 'reset'" :title="modalTitle" @resetCompl="(res) => {
+    runModalCallback(res)
+  }
+    ">
   </ResetModal>
 </template>
 
@@ -77,6 +38,7 @@ import { AuthInfo, type IUser, type IError } from '../assets/ts/auth'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import { useUserInfoStore } from '@/stores/user'
+import { useServiceStore } from '@/stores/service'
 import 'vue3-toastify/dist/index.css'
 import AlertModal from '@/components/AlertModalItem.vue'
 import SignUpModal from '@/components/modals/SignUpModal.vue'
@@ -94,6 +56,7 @@ const modalTitle = ref('')
 
 const auth = new AuthInfo()
 const store = useUserInfoStore()
+const serviceStore = useServiceStore()
 
 const changeAlertMessage = computed(() => {
   return isAlertVisible.value ? '로그인에 실패하였습니다.' : ''
@@ -103,7 +66,7 @@ const showSignUpModal = (ev: any) => {
   // 회원가입 팝업으로 처리
   modalType.value = ev.target.innerText
   modalTitle.value = ev.target.innerText + ' 회원 가입'
-  isShowModal.value = true
+  serviceStore.setShowModalStatus(true)
 }
 
 const signInUser = async () => {
@@ -141,7 +104,7 @@ const signUpWithGoogle = async () => {
 const resetPassword = () => {
   modalType.value = 'reset'
   modalTitle.value = '비밀번호 재설정'
-  isShowModal.value = true
+  serviceStore.setShowModalStatus(true)
 }
 
 const runModalCallback = (res: any) => {

@@ -1,6 +1,6 @@
 
 <template>
-    <Modal ref="baseModal">
+    <Modal isShowCloseBtn>
         <template #title>
             <span class="text-lg font-semibold">{{ props.title }}</span>
         </template>
@@ -13,8 +13,6 @@
         </template>
         <template #footer>
             <button class="bg-blue-600 w-16 p-2 rounded font-bold text-base text-white" @click="confirm">확인</button>
-            <button class="border border-blue-600 w-16 p-2 rounded font-bold text-base text-blue-600"
-                @click="closeModal">닫기</button>
         </template>
     </Modal>
 </template>
@@ -33,11 +31,7 @@ const props = defineProps({
 
 const resetEmail = ref('')
 
-const emit = defineEmits(['closeModal', 'resetCompl'])
-
-const closeModal = () => {
-    emit('closeModal', false)
-}
+const emit = defineEmits(['resetCompl'])
 
 const confirm = async () => {
     const auth = new AuthInfo();
