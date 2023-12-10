@@ -1,8 +1,20 @@
 <template>
   <div class="container mx-auto flex flex-col mt-10 mb-10 content">
     <div class="flex flex-col space-y-2 mx-0 my-auto" role="form">
-      <input class="border p-2" type="email" id="email" placeholder="이메일을 입력해주세요." v-model="email" />
-      <input class="border p-2" type="password" id="password" placeholder="패스워드를 입력해주세요." v-model="password" />
+      <input
+        class="border p-2"
+        type="email"
+        id="email"
+        placeholder="이메일을 입력해주세요."
+        v-model="email"
+      />
+      <input
+        class="border p-2"
+        type="password"
+        id="password"
+        placeholder="패스워드를 입력해주세요."
+        v-model="password"
+      />
       <button class="primary-btn" @click="signInUser">로그인</button>
       <button class="default-btn" @click="resetPassword">비밀번호 재설정</button>
       <div class="box-content flex">
@@ -13,22 +25,38 @@
     </div>
   </div>
   <Teleport to="body">
-    <AlertModal v-if="isAlertVisible === true" :isVisible="isAlertVisible" :msg="changeAlertMessage" :msgType="'warning'"
-      @response="(v) => {
-        isAlertVisible = v
-      }
-        ">
+    <AlertModal
+      v-if="isAlertVisible === true"
+      :isVisible="isAlertVisible"
+      :msg="changeAlertMessage"
+      :msgType="'warning'"
+      @response="
+        (v) => {
+          isAlertVisible = v
+        }
+      "
+    >
     </AlertModal>
   </Teleport>
 
-  <SignUpModal v-if="modalType == 'E-mail'" :title="modalTitle" @signUpCompl="(res) => {
-    runModalCallback(res)
-  }
-    "></SignUpModal>
-  <ResetModal v-if="modalType == 'reset'" :title="modalTitle" @resetCompl="(res) => {
-    runModalCallback(res)
-  }
-    ">
+  <SignUpModal
+    v-if="modalType == 'E-mail'"
+    :title="modalTitle"
+    @signUpCompl="
+      (res) => {
+        runModalCallback(res)
+      }
+    "
+  ></SignUpModal>
+  <ResetModal
+    v-if="modalType == 'reset'"
+    :title="modalTitle"
+    @resetCompl="
+      (res) => {
+        runModalCallback(res)
+      }
+    "
+  >
   </ResetModal>
 </template>
 
