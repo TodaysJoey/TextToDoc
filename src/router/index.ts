@@ -20,7 +20,7 @@ const router = createRouter({
       path: '/editor',
       name: 'editor',
       component: DocumentEditor
-    },
+    }
     // {
     //   path: '/about',
     //   name: 'about',

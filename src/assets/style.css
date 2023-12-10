@@ -2,81 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
-    .header-primary-btn {
-        background-color: #3563E9;
-        border-radius: 5px;
-        font-weight: bold;
-        color: #fff;
-        padding: 10px;
-        font-size: 14px;
-    }
+  .header-primary-btn {
+    background-color: #3563e9;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px;
+    font-size: 14px;
+  }
 
-    .warning-title {
-        @apply text-red-600 font-bold text-base
-    }
+  .warning-title {
+    @apply text-red-600 font-bold text-base;
+  }
 
-    .info-title {
-        @apply text-blue-600 font-bold text-base
-    }
+  .info-title {
+    @apply text-blue-600 font-bold text-base;
+  }
 
-    .confirm-title {
-        @apply text-green-600 font-bold text-base
-    }
+  .confirm-title {
+    @apply text-green-600 font-bold text-base;
+  }
 
-    .warning-ok-btn {
-        @apply bg-red-600 w-16 p-2 rounded font-bold text-base text-white
-    }
+  .warning-ok-btn {
+    @apply bg-red-600 w-16 p-2 rounded font-bold text-base text-white;
+  }
 
-    .warning-cancel-btn {
-        @apply border border-red-600 w-16 p-2 rounded font-bold text-base text-red-600
-    }
+  .warning-cancel-btn {
+    @apply border border-red-600 w-16 p-2 rounded font-bold text-base text-red-600;
+  }
 
-    .confirm-ok-btn {
-        @apply bg-green-600 w-16 p-2 rounded font-bold text-base text-white
-    }
+  .confirm-ok-btn {
+    @apply bg-green-600 w-16 p-2 rounded font-bold text-base text-white;
+  }
 
-    .confirm-cancle-btn {
-        @apply border border-green-600 w-16 p-2 rounded font-bold text-base text-green-600
-    }
+  .confirm-cancle-btn {
+    @apply border border-green-600 w-16 p-2 rounded font-bold text-base text-green-600;
+  }
 
-    .info-ok-btn {
-        @apply bg-blue-600 w-16 p-2 rounded font-bold text-base text-white
-    }
+  .info-ok-btn {
+    @apply bg-blue-600 w-16 p-2 rounded font-bold text-base text-white;
+  }
 
-    .info-cancel-btn {
-        @apply border border-blue-600 w-16 p-2 rounded font-bold text-base text-blue-600
-    }
-
-
+  .info-cancel-btn {
+    @apply border border-blue-600 w-16 p-2 rounded font-bold text-base text-blue-600;
+  }
 }
 
 @layer base {
-    .content {
-        min-height: 744px;
-        padding-bottom: 140px;
-    }
+  .content {
+    min-height: 744px;
+    padding-bottom: 140px;
+  }
 
-    .primary-btn {
-        background-color: #3563E9;
-        border-radius: 5px;
-        font-weight: bold;
-        color: #fff;
-        padding: 10px;
-        font-size: 14px;
-    }
+  .primary-btn {
+    background-color: #3563e9;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px;
+    font-size: 14px;
+  }
 
-    .default-btn {
-        background-color: #fff;
-        border: 1px solid #3563E9;
-        border-radius: 5px;
-        color: #3563E9;
-        padding: 7px;
-        font-size: 14px;
-    }
+  .default-btn {
+    background-color: #fff;
+    border: 1px solid #3563e9;
+    border-radius: 5px;
+    color: #3563e9;
+    padding: 7px;
+    font-size: 14px;
+  }
 
-    .primary-text {
-        color: #3563E9;
-    }
+  .primary-text {
+    color: #3563e9;
+  }
 }
