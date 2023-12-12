@@ -136,7 +136,7 @@ const resetPassword = () => {
 }
 
 const runModalCallback = (res: any) => {
-  if (modalType.value == 'email' && res.isSuccess === true) {
+  if (modalType.value == 'E-mail' && res.isSuccess === true) {
     if (res.isSuccess === true) {
       email.value = res.user.email
       isShowModal.value = false

@@ -11,8 +11,8 @@
         <p>{{ props.msg }}</p>
       </div>
       <div class="flex space-x-2">
-        <button :class="okBtnColorMode" @click="clickCloseBtn">확인</button>
-        <button :class="cancelBtnColorMode" @click="clickCloseBtn">닫기</button>
+        <button id="alertConfirmBtn" :class="okBtnColorMode" @click="clickCloseBtn($event)">확인</button>
+        <button id="alertCancleBtn" :class="cancelBtnColorMode" @click="clickCloseBtn($event)">닫기</button>
       </div>
     </div>
   </div>
@@ -25,14 +25,16 @@ import warning_icon from '../assets/images/warning_icon.svg'
 import confirm_icon from '../assets/images/confirm_icon.svg'
 
 const props = defineProps({
-  isVisible: { type: Boolean, required: true },
   msg: String,
   msgType: String
 })
 
 const emit = defineEmits(['response'])
-const clickCloseBtn = () => {
-  emit('response', false)
+const clickCloseBtn = (event) => {
+  let resVal = false
+  if(event.target.id == 'alertConfirmBtn') resVal = true
+
+  emit('response', resVal)
 }
 
 const alertType = ref(props.msgType)
