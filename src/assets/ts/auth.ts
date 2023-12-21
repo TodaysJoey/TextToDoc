@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  deleteUser,
   type Auth,
   type UserCredential,
   type UserInfo,
@@ -59,7 +60,7 @@ class AuthInfo {
   }
 
   signUp(email: string, password: string): Promise<IUser> {
-    if (!!email || !!password) {
+    if (!email || !password) {
       throw new Error('입력항목을 확인해주세요.')
     } else {
       return createUserWithEmailAndPassword(this.auth, email, password)
@@ -103,6 +104,14 @@ class AuthInfo {
 
   resetPassword(email: string): Promise<IUser | IError> {
     return sendPasswordResetEmail(this.auth, email)
+      .then(() => authEventHandler.success(true))
+      .catch((error) => {
+        throw authEventHandler.error(false, error.code, error.message)
+      })
+  }
+
+  deleteUserInfo(): Promise<IUser> {
+    return deleteUser(this.auth.currentUser!)
       .then(() => authEventHandler.success(true))
       .catch((error) => {
         throw authEventHandler.error(false, error.code, error.message)
