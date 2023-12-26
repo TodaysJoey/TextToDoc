@@ -5,6 +5,7 @@
 <script setup lang='ts'>
 //import { ref } from 'vue'
 import EditorJS from '@editorjs/editorjs'
+import {type BlockAPI, type BlockMutationEvent, type BlockAddedEvent, type BlockChangedEvent, type BlockMovedEvent, type BlockRemovedEvent} from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import RawTool from '@editorjs/raw'
 // import List from "@editorjs/list"
