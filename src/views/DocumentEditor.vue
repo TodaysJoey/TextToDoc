@@ -15,8 +15,10 @@
         </div>
       </div>
       <div class="editor flex flex-nowrap">
-        <div class="bg-white basis-1/2 h-screen ml-5 mr-2"></div>
-        <div class="bg-white basis-1/2 h-screen mr-5 ml-2"></div>
+        <div class="bg-white basis-1/2 h-screen ml-5 mr-2 p-4">
+          <EditorItem></EditorItem>
+        </div>
+        <div class="bg-white basis-1/2 h-screen mr-5 ml-2 p-4"></div>
       </div>
     </div>
     <div class="overlay" @click="closeContextMenu" v-if="isShowContext"></div>
@@ -32,6 +34,7 @@ import saveIcon from '@/assets/images/save_icon.svg'
 import exportIcon from '@/assets/images/export_icon.svg'
 import profileTmpImage from '@/assets/images/user_thumb.svg'
 import ContextMenu from '@/components/UserDeleteContextMenu.vue'
+import EditorItem from '@/components/editor/EditorItem.vue'
 import { useUserInfoStore } from '@/stores/user'
 
 
