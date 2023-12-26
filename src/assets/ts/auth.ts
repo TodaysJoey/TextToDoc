@@ -111,7 +111,11 @@ class AuthInfo {
   }
 
   deleteUserInfo(): Promise<IUser> {
-    return deleteUser(this.auth.currentUser!)
+    if (!this.auth.currentUser) {
+      throw authEventHandler.error(false, '', '계정 삭제 실패, 로그인 정보 없음') // TODO error msg
+    }
+
+    return deleteUser(this.auth.currentUser)
       .then(() => authEventHandler.success(true))
       .catch((error) => {
         throw authEventHandler.error(false, error.code, error.message)
