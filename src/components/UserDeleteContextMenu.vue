@@ -38,14 +38,20 @@ const runModalAfter = async (res:boolean) => {
 const deleteUser = async ()=>{
   const auth = new AuthInfo()
   try {
-    let res: IUser = await auth.deleteUserInfo();
-    if(res.isSuccess) {
+    // FIXME router.push 즉시 사라지는 문제 대응
+    // let res: IUser = await auth.deleteUserInfo();
+    // if(res.isSuccess) {
       await toast.success('계정을 삭제했어요 :(', {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: false
+
       })
       userStore.deleteUserInfo()
-      router.push({path:'/'})
-    }
+
+      setTimeout(() => {
+        router.push({ path: '/' })
+      }, 10000);
+    // }
   } catch(e) {
     console.error((e as IError).errorCode, (e as IError).errorMessage)
   }
