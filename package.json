@@ -12,7 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@editorjs/editorjs": "2.28.2",
+    "@editorjs/editorjs": "2.29.0-rc.7",
     "@editorjs/header": "2.8.1",
     "@editorjs/list": "1.9.0",
     "@editorjs/marker": "1.4.0",
