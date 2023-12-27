@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang='ts'>
-//import { ref } from 'vue'
+import { ref } from 'vue'
 import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import RawTool from '@editorjs/raw'
@@ -13,6 +13,10 @@ import Marker from '@editorjs/marker'
 import NestedList from '@editorjs/nested-list'
 import Underline from '@editorjs/underline'
 import Warning from '@editorjs/warning';
+
+
+const docStr = ref('')
+const emit = defineEmits(['change'])
 
 const editor = new EditorJS({
     holder: 'editorjs',
@@ -39,6 +43,56 @@ const editor = new EditorJS({
         },
         underline: Underline,
         warning: Warning,
+    },
+    onChange: async (api, event) => {
+        // TODO event 에서 block-added type 인 경우 데이터 처리
+        console.log('Now I know that Editor\'s content changed!', event)
+        // if(event.type == 'block-added') {
+            const contents = await api.saver.save()
+            console.log(contents)
+
+            docStr.value = ''
+
+            for (let block of contents.blocks) {
+                if (block.type == 'paragraph') {
+                    docStr.value += `<p>${block.data.text}</p>`
+                } else if (block.type == 'list') {
+                    docStr.value += `<ul>`
+                    for (let item of block.data.items) {
+                        docStr.value += `<li>${item.content}</li>`
+                        if(item.items?.length > 0) {    // 중첩 리스트가 있을 때
+                            docStr.value += `<ul style='padding-left: 10px;'>`
+                            for(let subItem of item.items) {
+                                docStr.value += `<li>${subItem.content}</li>`
+                            }
+                            docStr.value += `</ul>`
+                        }
+                    }
+
+                    docStr.value += `</ul>`
+                } else if(block.type == 'header') {
+                    switch(block.data.level) {
+                        case 1:
+                            docStr.value += `<h1>${block.data.text}</h1>`
+                            break
+                        case 2:
+                            docStr.value += `<h2>${block.data.text}</h2>`
+                            break
+                        case 3:
+                            docStr.value += `<h3>${block.data.text}</h3>`
+                            break
+                        case 4:
+                            docStr.value += `<h4>${block.data.text}</h4>`
+                            break
+                    }
+                    
+                }
+            }
+
+            emit('change', docStr.value)
+        // }
+        
+
     }
 });
 

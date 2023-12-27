@@ -16,9 +16,11 @@
       </div>
       <div class="editor flex flex-nowrap">
         <div class="bg-white basis-1/2 h-screen ml-5 mr-2 p-4">
-          <EditorItem></EditorItem>
+          <EditorItem @change="(data)=> changedEditorData(data)"></EditorItem>
         </div>
-        <div class="bg-white basis-1/2 h-screen mr-5 ml-2 p-4"></div>
+        <div class="bg-white basis-1/2 h-screen mr-5 ml-2 p-4">
+          <PreviewItem :str="htmlStr"></PreviewItem>
+        </div>
       </div>
     </div>
     <div class="overlay" @click="closeContextMenu" v-if="isShowContext"></div>
@@ -35,6 +37,7 @@ import exportIcon from '@/assets/images/export_icon.svg'
 import profileTmpImage from '@/assets/images/user_thumb.svg'
 import ContextMenu from '@/components/UserDeleteContextMenu.vue'
 import EditorItem from '@/components/editor/EditorItem.vue'
+import PreviewItem from '@/components/editor/PreviewItem.vue'
 import { useUserInfoStore } from '@/stores/user'
 
 
@@ -42,6 +45,7 @@ const userStore = useUserInfoStore()
 const isShowContext = ref(false)
 const menuX = ref(0)
 const menuY = ref(0)
+const htmlStr = ref('')
 
 const showContextMenu = (ev) => {
   ev.preventDefault()
@@ -53,6 +57,12 @@ const showContextMenu = (ev) => {
 const closeContextMenu = () => {
   isShowContext.value = false;
 };
+
+const changedEditorData = (str: string) => {
+  // eslint-disable-next-line no-debugger
+  debugger
+  htmlStr.value = str
+}
 
 </script>
 
