@@ -58,17 +58,7 @@ const editor = new EditorJS({
                     docStr.value += `<p>${block.data.text}</p>`
                 } else if (block.type == 'list') {
                     docStr.value += `<ul>`
-                    for (let item of block.data.items) {
-                        docStr.value += `<li>${item.content}</li>`
-                        if(item.items?.length > 0) {    // 중첩 리스트가 있을 때
-                            docStr.value += `<ul style='padding-left: 10px;'>`
-                            for(let subItem of item.items) {
-                                docStr.value += `<li>${subItem.content}</li>`
-                            }
-                            docStr.value += `</ul>`
-                        }
-                    }
-
+                    docStr.value += getBulletItem(block.data.items)
                     docStr.value += `</ul>`
                 } else if(block.type == 'header') {
                     switch(block.data.level) {
@@ -95,6 +85,21 @@ const editor = new EditorJS({
 
     }
 });
+
+const getBulletItem = (list, called = 0) => {
+    const listString = new Array()
+
+    for(let i=0; i<list.length; i++) {
+        listString.push(`<li>${list[i].content}</li>`)
+        if(list[i].items.length > 0){
+            listString.push(`<ul style='padding-left: 10px;'>`)
+            listString.push(getBulletItem(list[i].items, called+1))
+            listString.push(`</ul>`)
+        }
+    }
+
+    return listString.join('')
+}
 
 
 </script>
